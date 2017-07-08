@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Rob's Reaction Tester</title>
+		<meta charset="utf-8" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<style>
+			body {
+				font-family: Verdana, Geneva, sans-serif;
+			}
+			
+			#box {
+				width: 100px;
+				height: 100px;
+				background-color: red;
+				display: none;
+				position: relative;
+			}
+			
+			#box p {
+				text-align: center;
+				position:relative;
+				top:35px;
+			}	
+			
+			.bold {
+				font-weight: bold;
+			}
+			
+			.underline {
+				text-decoration: underline;
+			}
+			
+		</style>
+		
+	</head>
+	<body>
+		<h2>Test your reactions!</h1>
+		<p>Click on the boxes and circles as quickly as you can!</p>	
+		<p id="score"><span class='underline'>Your time:</span> <span class = "bold">(not attempted yet)</span></p>
+		<div id = "box">
+			<p>Click me boi</p>
+		</div>
+		<script type = "text/javascript">
+			var delay;
+			var clickedTime;
+			var createdTime;
+			var circle = false;
+			var screenWidth = 1200;
+			var screenHeight = 300;
+			var delayLimit = 4000;
+			
+			function makeBox() {
+				delay = Math.floor(Math.random() * delayLimit + 10);
+				setTimeout(function() {
+					var pos = randPos();
+					document.getElementById("box").style.display = "block";
+					document.getElementById("box").style.backgroundColor= genRandomColor();
+					document.getElementById("box").style.left= pos[0] + "px";
+					document.getElementById("box").style.top= pos[1] + "px";
+					var randInt = Math.random();
+					if (randInt > 0.5) {
+						document.getElementById("box").style.borderRadius = "50px";
+					} else if (randInt <= 0.5) {
+						document.getElementById("box").style.borderRadius = "0px";
+					}
+					createdTime = Date.now();
+				}, delay);
+			}			
+			
+			function genRandomColor() {
+				var letters = "0123456789ABCDEF".split("");
+				var color = "#";
+				for (i=0; i< 6; i++) {
+					color += letters[Math.floor(Math.random() * 16)]
+				}
+				return color;
+			}
+			
+			function randPos() {
+				return [Math.floor(Math.random() * (screenWidth-100) + 100), Math.floor(Math.random() * (screenHeight-100) + 100)];
+			}
+			
+			document.getElementById("box").onclick = function() {
+				clickedTime = Date.now();
+				document.getElementById("box").style.display = "none";
+				reactionTime = (clickedTime - createdTime)/1000;
+				document.getElementById("score").innerHTML = "<span class='underline'>Your time:</span> <span class = 'bold'>" + reactionTime + "s</span>";
+				makeBox();
+			}
+			
+			makeBox();
+			
+		</script>
+	</body>
+</html>
